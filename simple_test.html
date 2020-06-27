@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="zh-cn">
+<head>
+	<meta charset="utf-8"/>
+	<title>webRTCAgent.v20200627.js测试</title>
+	<script type="text/javascript" src="../../../project_main/src/part/webRTC/adapter.js"></script>
+	<script type="text/javascript" src="../../../project_main/src/part/webRTC/webRTCAgent.v20200627.js"></script>
+	<script type="text/javascript" src="../../../project_main/src/part/blob/blobAgent.v20200627.js"></script>
+</head>
+<body>
+	<fieldset>
+		<legend>基本功能测试</legend>
+		<!-- 
+			video标签，需要有autoplay属性。
+			方式录像时的重声，需要增加“muted”属性，就是录像后播放时，不输出声音。 
+			未指定width、height时，将默认随视频而改变。
+		-->
+		<video id="video" autoplay muted></video>
+		<input type="button" onclick="simple_start()" value="初始化" />
+		<input type="button" onclick="simple_record_start()" value="录像开始" />
+		<input type="button" onclick="simple_record_stop()" value="录像停止" />
+
+		<input type="button" onclick = "simple_download_last()" value="下载最后一个视频" />
+
+		<input type="button" onclick="simple_devices()" value="设备获取" />
+
+		<div id="outer"></div>
+	</fieldset>
+</body>
+</html>
+<script type="text/javascript">
+var agentSimple;
+function simple_download_last(){
+	var blobArray = agentSimple.getDataArray();
+
+	if(blobArray.length<1){
+		return;
+	}
+	bloba.download(blobArray[blobArray.length-1],"record.webm");
+}
+
+async function simple_devices(){
+	simple_init();
+	var idObject;
+	idObject = await agentSimple.getDevicesIdConfig();
+	console.info(idObject);
+}
+
+function simple_init(){
+	if(agentSimple!=null && agentSimple!=undefined){
+		// 只初始化一次。
+		return;
+	}
+	agentSimple = new rtca();
+	var state = agentSimple.canUse();
+	if(state==null || state==undefined || state!=true){
+		alert("当前平台不支持此功能！");
+		return;
+	}
+	agentSimple.scene("ve");
+}
+function simple_start() {
+	simple_init();
+	var video;
+	video = document.getElementById("video");
+	agentSimple.videoInit({video:video});
+}
+function simple_record_start(){
+	agentSimple.videoRecordStart();
+}
+function simple_record_stop(){
+	if(!agentSimple.videoRecordIsStart()){
+		alert("未记录");
+		return;
+	}else{
+		agentSimple.videoRecordStop();
+	}
+	// 以延迟方式进行数据获取，否则，会有数据获取不对称的问题。
+	// 
+	setTimeout(function(){
+		console.info(agentSimple.getDataArray());
+	},100);
+}
+</script>
