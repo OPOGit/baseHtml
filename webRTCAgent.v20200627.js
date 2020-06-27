@@ -184,13 +184,13 @@
 		/* 约束对象获取、配置。 */
 		constrains = f_getConstrains.call(instance);
 		if(!f_isEmpty(idConfig.audioinput)){
-			if(f_isEmpty(constrains.audio)){
+			if(f_isEmpty(constrains.audio) || typeof(constrains.audio)!="object"){
 				constrains.audio={};
 			}
 			constrains.audio.deviceId = idConfig["audioinput"];
 		}
 		if(!f_isEmpty(idConfig.videoinput)){
-			if(f_isEmpty(constrains.video)){
+			if(f_isEmpty(constrains.video) || typeof(constrains.videoinput)!="object"){
 				constrains.video={};
 			}
 			constrains.video.deviceId = idConfig.videoinput;
@@ -200,6 +200,8 @@
 			tmp = f_getMediaOutputConfig();
 			tmp.audiooutput = idConfig.audiooutput;
 		}
+
+		f_debug("constrains is ",constrains,".");
 	}
 
 	/**
@@ -621,6 +623,12 @@
 		if(f_isEmpty(constrains)){
 			return 3;
 		}
+
+		var tmp;
+		tmp = document.createElement("div");
+		tmp.innerText = JSON.stringify(constrains);
+		document.body.appendChild(tmp);
+
 		// 设备流对象获取。
 		userMediaStream = await f_getUserMediaStreamByConstrains(constrains);
 		if(f_isEmpty(userMediaStream)){
@@ -670,7 +678,7 @@
 		f_prototypeExtend("videoRecordIsInitOver",f_videoRecordIsInitOver);
 		f_prototypeExtend("videoRecordStop",f_videoRecordStop);
 		f_prototypeExtend("getDataArray",f_getMediaRecorderDataArray);
-		
+
 		f_prototypeExtend("setDeviceIdConfig",f_setDeviceIdConfig);
 		f_prototypeExtend("getDevicesIdConfig",f_getDevicesIdConfig);
 
