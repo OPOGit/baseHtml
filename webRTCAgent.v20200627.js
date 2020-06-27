@@ -670,7 +670,8 @@
 		f_prototypeExtend("videoRecordIsInitOver",f_videoRecordIsInitOver);
 		f_prototypeExtend("videoRecordStop",f_videoRecordStop);
 		f_prototypeExtend("getDataArray",f_getMediaRecorderDataArray);
-
+		
+		f_prototypeExtend("setDeviceIdConfig",f_setDeviceIdConfig);
 		f_prototypeExtend("getDevicesIdConfig",f_getDevicesIdConfig);
 
 		/* 以多实例方式，提供外部使用。 */

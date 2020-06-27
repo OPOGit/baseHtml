@@ -3,9 +3,9 @@
 <head>
 	<meta charset="utf-8"/>
 	<title>webRTCAgent.v20200627.js测试</title>
-	<script type="text/javascript" src="adapter.js"></script>
-	<script type="text/javascript" src="webRTCAgent.v20200627.js"></script>
-	<script type="text/javascript" src="blobAgent.v20200627.js"></script>
+	<script type="text/javascript" src="../../../project_main/src/part/webRTC/adapter.js"></script>
+	<script type="text/javascript" src="../../../project_main/src/part/webRTC/webRTCAgent.v20200627.js"></script>
+	<script type="text/javascript" src="../../../project_main/src/part/blob/blobAgent.v20200627.js"></script>
 </head>
 <body>
 	<fieldset>
@@ -15,10 +15,7 @@
 			方式录像时的重声，需要增加“muted”属性，就是录像后播放时，不输出声音。 
 			未指定width、height时，将默认随视频而改变。
 		-->
-
-		<video id="video" autoplay muted controls="controls"></video>
-			<span>旋转效果展示</span>
-
+		<video id="video" autoplay muted></video>
 		<input type="button" onclick="simple_start()" value="初始化" />
 		<input type="button" onclick="simple_record_start()" value="录像开始" />
 		<input type="button" onclick="simple_record_stop()" value="录像停止" />
@@ -27,7 +24,10 @@
 
 		<input type="button" onclick="simple_devices()" value="设备获取" />
 
-		<div id="outer"></div>
+
+		<div >audioInput：
+			<div id="audioInput"></div>
+		</div>
 	</fieldset>
 </body>
 </html>
@@ -44,9 +44,33 @@ function simple_download_last(){
 
 async function simple_devices(){
 	simple_init();
-	var idObject;
+	var idObject,theArray,i,j,container,tmp;
 	idObject = await agentSimple.getDevicesIdConfig();
-	console.info(idObject);
+	
+	// 只进行视频选择的绑定。
+	theArray = idObject.videoinput;
+	if(theArray && theArray.length>0){
+		container = document.getElementById("audioInput");
+		for(i=0,j=theArray.length;i<j;i++){
+			tmp = document.createElement("button");
+			tmp.setAttribute("d-type","audioinput");
+			tmp.setAttribute("d-id",theArray[i]);
+			tmp.onclick = audioInputChange;
+			tmp.innerText = "audioInput-"+(i+1);
+			container.appendChild(tmp);
+		}
+	}
+}
+
+function audioInputChange(){
+	var config;
+
+	config ={};
+	type = this.getAttribute("d-type");
+	config[type] = this.getAttribute("d-id");
+
+	agentSimple.setDeviceIdConfig(config);
+	agentSimple.videoInit();
 }
 
 function simple_init(){
