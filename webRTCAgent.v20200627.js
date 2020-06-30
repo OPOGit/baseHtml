@@ -487,6 +487,7 @@
 		if(f_isEmpty(constrains.facingMode)){
 			constrains.facingMode = {};
 		}
+constrains.facingMode="environment";
 		// constrains.facingMode.exact = "environment";
 	}
 
