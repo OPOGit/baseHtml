@@ -490,7 +490,7 @@
 			constrains.video.facingMode = {};
 		}
 		constrains.video.facingMode="environment";
-		constrains.video.facingMode.exact = "environment";
+		// constrains.video.facingMode.exact = "environment";
 	}
 
 	/**
