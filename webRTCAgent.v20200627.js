@@ -471,7 +471,6 @@
 		constrains = f_getConstrains.call(instance);
 
 		/* 配置组合。 */
-		constrains.video = true;
 		constrains.audio = true;
 		// 宽度在320~1920之间
 		if(f_isEmpty(constrains.width)){
