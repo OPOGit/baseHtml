@@ -3,28 +3,18 @@
 <head>
 	<meta charset="utf-8"/>
 	<title>webRTCAgent.v20200627.js测试</title>
-	<script type="text/javascript" src="adapter.js"></script>
 	<script type="text/javascript" src="webRTCAgent.v20200627.js"></script>
 	<script type="text/javascript" src="blobAgent.v20200627.js"></script>
 </head>
 <body>
 	<fieldset>
 		<legend>基本功能测试</legend>
-		<!-- 
-			video标签，需要有autoplay属性。
-			方式录像时的重声，需要增加“muted”属性，就是录像后播放时，不输出声音。 
-			未指定width、height时，将默认随视频而改变。
-		-->
 		<video id="video" autoplay muted></video>
 		<input type="button" onclick="simple_start()" value="初始化" />
 		<input type="button" onclick="simple_record_start()" value="录像开始" />
 		<input type="button" onclick="simple_record_stop()" value="录像停止" />
-
 		<input type="button" onclick = "simple_download_last()" value="下载最后一个视频" />
-
 		<input type="button" onclick="simple_devices()" value="设备获取" />
-
-
 		<div >audioInput：
 			<div id="audioInput"></div>
 		</div>
