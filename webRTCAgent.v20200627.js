@@ -165,6 +165,8 @@
 
 	/**
 	 * 200627，进行当前设备指定的封装。
+	 * 实际测试中，发现并不支持此功能。怀疑是chrome浏览器的用法问题。
+	 * 
 	 * @param {object} idConfig 对象id的配置对象。
 	 * @return {int} 处理过程是否有异常的状态。
 	 * 0，没有异常。
@@ -461,6 +463,9 @@
 	 */
 	f_setSceneOfVideoExamination = function(){
 		var instance,constrains;
+
+		f_debug("f_setSceneOfVideoExamination start.");
+
 		/* 参数获取 */
 		instance = this;
 		constrains = f_getConstrains.call(instance);
@@ -483,14 +488,19 @@
 		// 视频分辨率：1280*720。
 		constrains.width.ideal = 1280;
 		constrains.height.ideal = 720;
+		// 后置摄像头，需要在video空间下配置。
 		if(f_isEmpty(constrains.video)){
 			constrains.video={};
 		}
 		if(f_isEmpty(constrains.video.facingMode)){
 			constrains.video.facingMode = {};
 		}
+		// 后置摄像头的配置方式1
 		constrains.video.facingMode="environment";
+		// 后置摄像头的配置方式2。
 		// constrains.video.facingMode.exact = "environment";
+
+		f_debug("constrains is changed to ",constrains,".");
 	}
 
 	/**
@@ -627,10 +637,8 @@
 			return 3;
 		}
 
-		var tmp;
-		tmp = document.createElement("div");
-		tmp.innerText = JSON.stringify(constrains);
-		document.body.appendChild(tmp);
+		// 测试信息的输出。
+		f_debug("constrains is ",constrains,".");
 
 		// 设备流对象获取。
 		userMediaStream = await f_getUserMediaStreamByConstrains(constrains);
@@ -735,13 +743,18 @@
 	};
 	f_debug = function ()
 	{
+		var tmp,value=[];
 		for(var i=0,j=arguments.length;i<j;i++){
 			if(typeof(arguments[i])=="string"){
-				console.debug(v_logTag+" D:"+arguments[i]);
+				value.push(v_logTag+" D:"+arguments[i]);
 			}else{
-				console.info(arguments[i]);
+				value.push(JSON.stringify(arguments[i]));
 			}
 		}
+
+		tmp = document.createElement("div");
+		tmp.innerText = value.join("\n");
+		document.body.appendChild(tmp);
 	};
 	f_error = function(){
 		for(var i=0,j=arguments.length;i<j;i++){
