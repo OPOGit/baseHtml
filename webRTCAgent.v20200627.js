@@ -483,12 +483,14 @@
 		// 视频分辨率：1280*720。
 		constrains.width.ideal = 1280;
 		constrains.height.ideal = 720;
-		// 后置摄像头
-		if(f_isEmpty(constrains.facingMode)){
-			constrains.facingMode = {};
+		if(f_isEmpty(constrains.video)){
+			constrains.video={};
 		}
-constrains.facingMode="environment";
-		// constrains.facingMode.exact = "environment";
+		if(f_isEmpty(constrains.video.facingMode)){
+			constrains.video.facingMode = {};
+		}
+		constrains.video.facingMode="environment";
+		constrains.video.facingMode.exact = "environment";
 	}
 
 	/**
